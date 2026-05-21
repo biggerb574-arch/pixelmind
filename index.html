@@ -333,13 +333,13 @@ async function generate(){
   await Promise.all(seeds.map(async(seed,i)=>{
     const encodedPrompt=encodeURIComponent(fullPrompt);
     const url=`https://image.pollinations.ai/prompt/${encodedPrompt}?width=${w}&height=${h}&seed=${seed}&model=${model}&nologo=true&enhance=true`;
+    const skel=skels.children[i]; // capture BEFORE async wait — live HTMLCollection shifts on replacement
     await new Promise(res=>{
       const img=new Image();
       img.onload=()=>{imgs[i]={url,seed};res()};
       img.onerror=()=>{imgs[i]=null;res()};
       img.src=url;
     });
-    const skel=skels.children[i];
     if(skel&&imgs[i]){
       const card=document.createElement('div');card.className='img-card';
       const im=document.createElement('img');im.src=url;im.alt=txt;im.loading='lazy';
@@ -363,7 +363,7 @@ function loadGallery(){
   GALLERY_PROMPTS.forEach(({p,tag},i)=>{
     const item=document.createElement('div');item.className='gallery-item';
     const seed=1000+i*137;
-    const url=`https://image.pollinations.ai/prompt/${encodeURIComponent(p+'photorealistic 8k')}&width=400&height=400&seed=${seed}&nologo=true`;
+    const url=`https://image.pollinations.ai/prompt/${encodeURIComponent(p+' photorealistic 8k')}?width=400&height=400&seed=${seed}&nologo=true`;
     const img=document.createElement('img');img.src=url;img.alt=tag;img.loading='lazy';
     const t=document.createElement('div');t.className='tag';t.textContent=tag;
     item.onclick=()=>{prompt.value=p;document.getElementById('generate').scrollIntoView({behavior:'smooth'})};
