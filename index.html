@@ -329,11 +329,13 @@ async function generate(){
   
   const seeds=Array.from({length:count},()=>Math.floor(Math.random()*999999));
   const imgs=[];
-  
-  await Promise.all(seeds.map(async(seed,i)=>{
+
+  for(let i=0;i<count;i++){
+    const seed=seeds[i];
     const encodedPrompt=encodeURIComponent(fullPrompt);
     const url=`https://image.pollinations.ai/prompt/${encodedPrompt}?width=${w}&height=${h}&seed=${seed}&model=${model}&nologo=true&enhance=true`;
-    const skel=skels.children[i]; // capture BEFORE async wait — live HTMLCollection shifts on replacement
+    out.querySelector('.loading-text').textContent=`✦ Generating image ${i+1} of ${count}...`;
+    const skel=skels.children[i];
     await new Promise(res=>{
       const img=new Image();
       img.onload=()=>{imgs[i]={url,seed};res()};
@@ -351,7 +353,7 @@ async function generate(){
       ov.appendChild(dl);ov.appendChild(cp);card.appendChild(im);card.appendChild(ov);
       skels.replaceChild(card,skel);
     }
-  }));
+  }
   
   const loaded=imgs.filter(Boolean).length;
   out.querySelector('.loading-text').textContent=`✦ ${loaded} image${loaded!==1?'s':''} generated! Hover to download.`;
