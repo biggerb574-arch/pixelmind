@@ -115,6 +115,36 @@ footer{border-top:1px solid var(--border);text-align:center;padding:2rem;color:v
 
 .pricing-chips{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin-top:.5rem}
 .price-tag{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:#4ade80;font-size:.75rem;padding:.2rem .7rem;border-radius:100px}
+
+/* MODALS */
+.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);z-index:1000;align-items:center;justify-content:center}
+.modal-backdrop.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2.5rem;width:100%;max-width:420px;position:relative;animation:modalIn .25s ease}
+.modal-pricing{max-width:780px}
+@keyframes modalIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.modal h2{font-family:'Syne',sans-serif;font-size:1.6rem;margin-bottom:.4rem}
+.modal p.sub{color:var(--muted);font-size:.9rem;margin-bottom:1.5rem}
+.modal-close{position:absolute;top:1rem;right:1.2rem;background:none;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;line-height:1}
+.modal-close:hover{color:var(--text)}
+.modal input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.95rem;padding:.75rem 1rem;outline:none;margin-bottom:.8rem;transition:.2s;box-sizing:border-box}
+.modal input:focus{border-color:var(--accent)}
+.modal input::placeholder{color:var(--muted)}
+.modal-btn{width:100%;padding:.8rem;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:600;cursor:pointer;transition:.2s;margin-top:.4rem}
+.modal-btn:hover{opacity:.85}
+.modal-switch{text-align:center;margin-top:1rem;font-size:.85rem;color:var(--muted)}
+.modal-switch a{color:var(--accent);cursor:pointer;text-decoration:none}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.2rem;margin-top:1.2rem}
+.plan{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:1.5rem;text-align:center;position:relative;transition:.2s}
+.plan.popular{border-color:var(--accent);background:rgba(124,92,252,.08)}
+.plan-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;font-size:.7rem;font-weight:700;padding:.25rem .8rem;border-radius:100px;white-space:nowrap}
+.plan h3{font-family:'Syne',sans-serif;font-size:1.1rem;margin-bottom:.5rem}
+.plan .price{font-size:2rem;font-weight:800;font-family:'Syne',sans-serif;color:var(--text)}
+.plan .price span{font-size:.9rem;font-weight:400;color:var(--muted)}
+.plan ul{list-style:none;margin:1rem 0;text-align:left;font-size:.85rem;color:var(--muted);display:flex;flex-direction:column;gap:.5rem}
+.plan ul li::before{content:'✓ ';color:var(--accent)}
+.plan-btn{width:100%;padding:.65rem;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.9rem;cursor:pointer;transition:.2s}
+.plan.popular .plan-btn{background:var(--accent);border-color:var(--accent);color:#fff}
+.plan-btn:hover{opacity:.8}
 </style>
 </head>
 <body>
@@ -126,8 +156,12 @@ footer{border-top:1px solid var(--border);text-align:center;padding:2rem;color:v
     <li><a href="#generate" onclick="scrollTo('generate')">Generate</a></li>
     <li><a href="#gallery" onclick="scrollTo('gallery')">Gallery</a></li>
     <li><a href="#features" onclick="scrollTo('features')">Features</a></li>
+    <li><a href="#" onclick="openModal('pricing')">Pricing</a></li>
   </ul>
-  <button class="nav-cta" onclick="document.getElementById('prompt').focus()">Start Free</button>
+  <div style="display:flex;gap:.7rem;align-items:center">
+    <button class="nav-cta" style="background:transparent;border:1px solid var(--border);color:var(--muted)" onclick="openModal('signin')">Sign In</button>
+    <button class="nav-cta" onclick="openModal('signup')">Sign Up</button>
+  </div>
 </nav>
 
 <section class="hero">
@@ -242,10 +276,89 @@ footer{border-top:1px solid var(--border);text-align:center;padding:2rem;color:v
 </div>
 
 <footer>
-  <p><strong style="color:var(--text)">✦ PixelMind AI</strong> — Free AI Image Generation</p>
-  <p style="margin-top:.5rem">Powered by <a href="https://pollinations.ai" style="color:var(--accent);text-decoration:none">Pollinations.ai</a> (free, open-source) · No API key required</p>
-  <p style="margin-top:.5rem">Built for business · Download & deploy on GitHub Pages, Netlify, or Vercel for free</p>
+  <p><strong style="color:var(--text)">✦ PixelMind AI</strong></p>
+  <div style="display:flex;gap:1.5rem;justify-content:center;margin-top:.8rem">
+    <a href="#" onclick="openModal('pricing')" style="color:var(--muted);text-decoration:none;font-size:.85rem;transition:.2s" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">Pricing</a>
+    <a href="#" onclick="openModal('signup')" style="color:var(--muted);text-decoration:none;font-size:.85rem;transition:.2s" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">Sign Up</a>
+    <a href="#" onclick="openModal('signin')" style="color:var(--muted);text-decoration:none;font-size:.85rem;transition:.2s" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">Sign In</a>
+  </div>
+  <p style="margin-top:.8rem;font-size:.75rem;color:var(--muted)">© 2025 PixelMind AI. All rights reserved.</p>
 </footer>
+
+
+<!-- SIGN IN MODAL -->
+<div class="modal-backdrop" id="modal-signin" onclick="closeOnBackdrop(event,'modal-signin')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-signin')">×</button>
+    <h2>Welcome back</h2>
+    <p class="sub">Sign in to your PixelMind account</p>
+    <input type="email" placeholder="Email address" id="si-email"/>
+    <input type="password" placeholder="Password" id="si-pass"/>
+    <button class="modal-btn" onclick="handleSignIn()">Sign In</button>
+    <p class="modal-switch">Don't have an account? <a onclick="switchModal('modal-signin','modal-signup')">Sign Up</a></p>
+  </div>
+</div>
+
+<!-- SIGN UP MODAL -->
+<div class="modal-backdrop" id="modal-signup" onclick="closeOnBackdrop(event,'modal-signup')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-signup')">×</button>
+    <h2>Create account</h2>
+    <p class="sub">Join PixelMind AI for free</p>
+    <input type="text" placeholder="Full name" id="su-name"/>
+    <input type="email" placeholder="Email address" id="su-email"/>
+    <input type="password" placeholder="Password" id="su-pass"/>
+    <button class="modal-btn" onclick="handleSignUp()">Create Account</button>
+    <p class="modal-switch">Already have an account? <a onclick="switchModal('modal-signup','modal-signin')">Sign In</a></p>
+  </div>
+</div>
+
+<!-- PRICING MODAL -->
+<div class="modal-backdrop" id="modal-pricing" onclick="closeOnBackdrop(event,'modal-pricing')">
+  <div class="modal modal-pricing">
+    <button class="modal-close" onclick="closeModal('modal-pricing')">×</button>
+    <h2>Simple Pricing</h2>
+    <p class="sub">Choose the plan that works for you</p>
+    <div class="plans">
+      <div class="plan">
+        <h3>Free</h3>
+        <div class="price">$0<span>/mo</span></div>
+        <ul>
+          <li>10 images per day</li>
+          <li>Standard quality</li>
+          <li>1–2 images at once</li>
+          <li>Community support</li>
+        </ul>
+        <button class="plan-btn" onclick="openModal('signup')">Get Started</button>
+      </div>
+      <div class="plan popular">
+        <div class="plan-badge">Most Popular</div>
+        <h3>Pro</h3>
+        <div class="price">$9<span>/mo</span></div>
+        <ul>
+          <li>Unlimited images</li>
+          <li>HD quality (1024px+)</li>
+          <li>Up to 4 images at once</li>
+          <li>Priority generation</li>
+          <li>No watermarks</li>
+        </ul>
+        <button class="plan-btn" onclick="openModal('signup')">Start Pro</button>
+      </div>
+      <div class="plan">
+        <h3>Business</h3>
+        <div class="price">$29<span>/mo</span></div>
+        <ul>
+          <li>Everything in Pro</li>
+          <li>API access</li>
+          <li>Commercial license</li>
+          <li>Custom branding</li>
+          <li>Priority support</li>
+        </ul>
+        <button class="plan-btn" onclick="openModal('signup')">Contact Sales</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
 const STYLES=[
@@ -330,21 +443,31 @@ async function generate(){
   const seeds=Array.from({length:count},()=>Math.floor(Math.random()*999999));
   const imgs=[];
 
+  async function loadImg(url){
+    for(let attempt=0;attempt<3;attempt++){
+      const ok=await new Promise(res=>{
+        const img=new Image();
+        img.onload=()=>res(true);
+        img.onerror=()=>res(false);
+        img.src=url+'&t='+Date.now();
+      });
+      if(ok)return true;
+      await new Promise(r=>setTimeout(r,2000));
+    }
+    return false;
+  }
+
   for(let i=0;i<count;i++){
     const seed=seeds[i];
     const encodedPrompt=encodeURIComponent(fullPrompt);
     const url=`https://image.pollinations.ai/prompt/${encodedPrompt}?width=${w}&height=${h}&seed=${seed}&model=${model}&nologo=true&enhance=true`;
-    out.querySelector('.loading-text').textContent=`✦ Generating image ${i+1} of ${count}...`;
+    out.querySelector('.loading-text').textContent=`✦ Generating image ${i+1} of ${count}... please wait`;
     const skel=skels.children[i];
-    await new Promise(res=>{
-      const img=new Image();
-      img.onload=()=>{imgs[i]={url,seed};res()};
-      img.onerror=()=>{imgs[i]=null;res()};
-      img.src=url;
-    });
+    const ok=await loadImg(url);
+    imgs[i]=ok?{url,seed}:null;
     if(skel&&imgs[i]){
       const card=document.createElement('div');card.className='img-card';
-      const im=document.createElement('img');im.src=url;im.alt=txt;im.loading='lazy';
+      const im=document.createElement('img');im.src=url;im.alt=txt;
       const ov=document.createElement('div');ov.className='img-overlay';
       const dl=document.createElement('a');dl.className='overlay-btn';dl.textContent='↓ Download';
       dl.href=url;dl.download='pixelmind-'+seed+'.jpg';dl.target='_blank';
@@ -353,6 +476,7 @@ async function generate(){
       ov.appendChild(dl);ov.appendChild(cp);card.appendChild(im);card.appendChild(ov);
       skels.replaceChild(card,skel);
     }
+    if(i<count-1) await new Promise(r=>setTimeout(r,1500));
   }
   
   const loaded=imgs.filter(Boolean).length;
@@ -376,6 +500,23 @@ function loadGallery(){
 document.getElementById('genBtn').onclick=generate;
 document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter')generate()});
 loadGallery();
+
+function openModal(name){document.getElementById('modal-'+name).classList.add('open');document.body.style.overflow='hidden';}
+function closeModal(name){document.getElementById('modal-'+name).classList.remove('open');document.body.style.overflow='';}
+function closeOnBackdrop(e,name){if(e.target===e.currentTarget)closeModal(name);}
+function switchModal(from,to){closeModal(from);openModal(to);}
+function handleSignIn(){
+  const email=document.getElementById('si-email').value;
+  if(!email){alert('Please enter your email.');return;}
+  alert('Sign in coming soon! We are setting up authentication.');
+}
+function handleSignUp(){
+  const name=document.getElementById('su-name').value;
+  const email=document.getElementById('su-email').value;
+  if(!name||!email){alert('Please fill in all fields.');return;}
+  alert('Thanks '+name+'! Account creation coming soon.');
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){['signin','signup','pricing'].forEach(closeModal);}});
 </script>
 </body>
 </html>
